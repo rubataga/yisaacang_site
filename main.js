@@ -1,7 +1,8 @@
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import ISAACHEAD from './isaachead.png';
+import ISAAC_HEAD_IMAGE from './images/isaachead.png';
+import SPACE_IMAGE from './images/space.jpg';
 
 // scene
 const scene = new THREE.Scene();
@@ -15,7 +16,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 camera.position.setZ(30);
 renderer.render( scene, camera);
 
-const isaacTexture = new THREE.TextureLoader().load(ISAACHEAD);
+const isaacTexture = new THREE.TextureLoader().load(ISAAC_HEAD_IMAGE);
 const isaacMaterial = new THREE.MeshBasicMaterial( {map: isaacTexture });
 
 // torus
@@ -50,14 +51,15 @@ Array(200).fill().forEach(addStar);
 const pointLight = new THREE.PointLight(0xffffff);
 pointLight.position.set(5, 5, 5)
 const ambientLight = new THREE.AmbientLight(0xffffff);
-scene.add(pointLight,ambientLight);
+scene.add(pointLight);
+scene.add(ambientLight);
 
 // const lightHelper = new THREE.PointLightHelper(pointLight)
-const gridHelper = new THREE.GridHelper(200, 50);
-scene.add(gridHelper);
+//const gridHelper = new THREE.GridHelper(200, 50);
+//scene.add(gridHelper);
 
 // background
-const spaceTexture = new THREE.TextureLoader().load('space.jpg');
+const spaceTexture = new THREE.TextureLoader().load(SPACE_IMAGE);
 scene.background = spaceTexture;
 
 function animate(){
