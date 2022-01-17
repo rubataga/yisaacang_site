@@ -1,6 +1,7 @@
 import './style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import ISAACHEAD from './isaachead.png';
 
 // scene
 const scene = new THREE.Scene();
@@ -14,7 +15,7 @@ renderer.setSize( window.innerWidth, window.innerHeight );
 camera.position.setZ(30);
 renderer.render( scene, camera);
 
-const isaacTexture = new THREE.TextureLoader().load('isaachead.png');
+const isaacTexture = new THREE.TextureLoader().load(ISAACHEAD);
 const isaacMaterial = new THREE.MeshBasicMaterial( {map: isaacTexture });
 
 // torus
