@@ -1,8 +1,13 @@
-import './style.css'
+import '/style.css'
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import ISAAC_HEAD_IMAGE from './images/isaachead.png';
-import SPACE_IMAGE from './images/space.jpg';
+import ISAAC_HEAD_IMAGE from '/static/images/isaachead.png';
+import SPACE_IMAGE from '/static/images/space.jpg';
+import TERMITE_DANCE from '/static/audio/termitedance.ogg';
+//import TERMITE_OBJ from '/static/termite/formicarufa.obj';
+import TERMITE_TEXTURE from '/static/termite/texture.jpg';
+import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+
 
 // scene
 const scene = new THREE.Scene();
@@ -32,7 +37,7 @@ const isaac = new THREE.Mesh(
   new THREE.SphereGeometry(3,20,20),
   new THREE.MeshBasicMaterial( {map: isaacTexture })
 );
-scene.add(isaac);
+//scene.add(isaac);
 
 // stars
 function addStar() {
@@ -62,6 +67,36 @@ scene.add(ambientLight);
 const spaceTexture = new THREE.TextureLoader().load(SPACE_IMAGE);
 scene.background = spaceTexture;
 
+// termite
+const textureLoader = new THREE.TextureLoader();
+const termiteMap = textureLoader.load(TERMITE_TEXTURE);
+const termiteMaterial = new THREE.MeshPhongMaterial({map: termiteMap});
+
+const termiteLoader = new OBJLoader();
+termiteLoader.load(
+	'/static/termite/formica rufa.obj',
+	function ( object ) {
+    object.traverse( function ( node ) {
+      if (node.isMesh ) node.materia = termiteMaterial;
+    });
+		scene.add( object );
+	});
+
+
+// audio
+const listener = new THREE.AudioListener;
+camera.add( listener );
+const sound = new THREE.Audio(listener);
+const audioLoader = new THREE.AudioLoader();
+audioLoader.load( TERMITE_DANCE, function ( buffer ) {
+  sound.setBuffer(buffer);
+  sound.setLoop(true);
+  sound.setVolume(0.5);
+  sound.play();
+});
+sound.setVolume(1);
+sound.play();
+
 function animate(){
   requestAnimationFrame( animate );
 
@@ -74,6 +109,8 @@ function animate(){
   isaac.rotation.z += .01;
 
   renderer.render( scene, camera);
+
+  //controls.update();
 }
 
 animate();
