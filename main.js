@@ -3,13 +3,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import ISAAC_HEAD_IMAGE from '/static/images/isaachead.png';
 import SPACE_IMAGE from '/static/images/space.jpg';
-import TERMITE_DANCE from '/static/audio/termitedance.ogg';
-//import TERMITE_OBJ from '/static/termite/formica rufa.obj';
-//import TERMITE_TEXTURE from '/static/termite/texture.jpg';
-//import { OBJLoader } from 'three/examples/jsm/loaders/OBJLoader.js';
+import TERMITE_DANCE from '/static/audio/termitedance.mp3';
 
 const startButton = document.getElementById('startButton');
 startButton.addEventListener('click', init);
+window.addEventListener('resize', onWindowResize);
 
 let camera, controls, scene, renderer, light, torus, isaac
 
@@ -30,6 +28,9 @@ function init() {
     isaac.add(audio);
     audio.play();
   })
+  let source = listener.context.createBufferSource();
+  source.connect(listener.context.destination);
+  source.start();
 }
 
 // scene
@@ -87,7 +88,6 @@ function addStar() {
   star.position.set(x, y, z);
   scene.add(star);
 }
-
 animate();
 
 function animate() {
@@ -103,4 +103,13 @@ function animate() {
 
   renderer.render(scene, camera);
 
+}
+const canvas = document.querySelector("canvas");
+
+function onWindowResize() {
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(window.innerWidth, window.innerHeight);
 }
